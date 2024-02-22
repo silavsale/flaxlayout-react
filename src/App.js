@@ -1,25 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import { Layout, Model } from 'flexlayout-react';
+import 'flexlayout-react/style/light.css';
+
+var json = {
+  global: {},
+  borders: [],
+  layout: {
+    type: 'row',
+    weight: 100,
+    children: [
+      {
+        type: 'tabset',
+        weight: 50,
+        children: [
+          {
+            type: 'tab',
+            name: 'One',
+            component: 'button',
+          },
+        ],
+      },
+      {
+        type: 'tabset',
+        weight: 50,
+        children: [
+          {
+            type: 'tab',
+            name: 'Two',
+            component: 'button',
+          },
+        ],
+      },
+    ],
+  },
+};
+
+const model = Model.fromJson(json);
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const factory = (node) => {
+    var component = node.getComponent();
+
+    if (component === 'button') {
+      return <button>{node.getName()}</button>;
+    }
+  };
+
+  return <Layout model={model} factory={factory} />;
 }
 
 export default App;
